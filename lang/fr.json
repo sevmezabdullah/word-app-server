@@ -1,0 +1,7 @@
+{
+  "responses": {
+    "success_register": "Inscription réussi. Veuillez vérifier votre compte en confirmant l'e-mail que nous avons envoyé à votre adresse e-mail.",
+    "already_registered": "Vous êtes déjà un utilisateur enregistré. Vous êtes redirigé vers l'écran de connexion.",
+    "signed_success": "Connexion réussie"
+  }
+}

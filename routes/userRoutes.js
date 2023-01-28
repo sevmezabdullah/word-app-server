@@ -1,4 +1,3 @@
-const express = require('express');
 const {
   login,
   register,
@@ -7,15 +6,15 @@ const {
   signInWithGoogle,
   verifyAccount,
 } = require('../controllers/userController');
-const userRoutes = express.Router();
+const express = require('express');
 
-userRoutes.post('/login', login);
-userRoutes.post('/register', register);
-userRoutes.post('/changePassword', changePassword);
-userRoutes.post('/logout', logout);
-userRoutes.post('/signInGoogle', signInWithGoogle);
-userRoutes.post('/verifyAccount', verifyAccount);
+const userRouter = express.Router();
 
-module.exports = {
-  userRoutes,
-};
+userRouter.post('/login', login);
+userRouter.post('/register', register);
+userRouter.post('/changePassword', changePassword);
+userRouter.post('/logout', logout);
+userRouter.post('/signInGoogle', signInWithGoogle);
+userRouter.post('/verifyAccount', verifyAccount);
+
+module.exports = userRouter;

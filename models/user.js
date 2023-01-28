@@ -1,0 +1,52 @@
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const userSchema = mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, 'Lütfen isminizi girin'],
+  },
+  surname: {
+    type: String,
+    required: [true, 'Lütfen soyadınızı girin.'],
+  },
+  email: {
+    type: String,
+    required: [true, 'Lütfen geçerli bir email adresi giriniz.'],
+    unique: true,
+    match: [
+      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+      'Lütfen geçerli bir email adresi girin',
+    ],
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+  },
+  isVerify: {
+    type: Boolean,
+    default: false,
+  },
+
+  password: {
+    type: String,
+
+    required: true,
+  },
+  authSource: {
+    type: String,
+    enum: ['classic', 'google'],
+    default: 'classic',
+  },
+  role: {
+    type: String,
+    enum: ['user', 'admin'],
+    default: 'user',
+  },
+  profilePic: {
+    type: String,
+    default:
+      'https://www.seekpng.com/png/detail/847-8474751_download-empty-profile.png',
+  },
+});
+
+module.exports = mongoose.model('User', userSchema);

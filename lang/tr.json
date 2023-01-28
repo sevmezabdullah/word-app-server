@@ -1,0 +1,9 @@
+{
+  "responses": {
+    "success_register": "Kayıt işlemi başarılı. Lütfen E-Posta adresinize gönderdiğimiz maili onaylayarak hesabınızı doğrulayın.",
+    "already_registered": "Zaten kayıtlı kullanıcısınız. Giriş ekranına yönlendiriliyorsunuz.",
+    "signed_success": "Giriş Başarılı",
+    "sign_fail": "Giriş başarısız. Lütfen e-posta ve şifrenizi kontrol ederek tekrar giriş yapmayı deneyin.",
+    "not_found_user": "E-posta adresinize kayıtlı hesap bulunamadı. Lütfen kayıt olarak tekrar giriş yapmayı deneyin."
+  }
+}

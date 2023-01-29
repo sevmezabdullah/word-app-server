@@ -32,22 +32,29 @@ async function register(request, response) {
 }
 //Done
 async function login(request, response) {
-  const responses = getResponses(request.body.lang);
-  const { email, password } = request.body;
+  try {
+    const responses = getResponses(request.body.lang);
+    const { email, password } = request.body;
 
-  const user = await User.findOne({ email: email });
+    const user = await User.findOne({ email: email });
 
-  if (user) {
-    const passwordVerify = await comparePassword(password, user.password);
-    if (passwordVerify) {
-      const token = await generateJWT({ user });
-      return response.json({ message: responses.signed_success, token: token });
-    } else {
-      return response.status(401).json({ message: responses.sign_fail });
+    if (user) {
+      const passwordVerify = await comparePassword(password, user.password);
+      if (passwordVerify) {
+        const token = await generateJWT({ user });
+        return response.json({
+          message: responses.signed_success,
+          token: token,
+        });
+      } else {
+        return response.status(401).json({ message: responses.sign_fail });
+      }
     }
-  }
-  if (!user) {
-    return response.status(404).json({ message: responses.not_found_user });
+    if (!user) {
+      return response.status(404).json({ message: responses.not_found_user });
+    }
+  } catch (error) {
+    return response.status(502).json({ message: error });
   }
 }
 

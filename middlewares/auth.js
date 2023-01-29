@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
 const { getResponses } = require('../utils/lang');
 const { response } = require('express');
-
+const User = require('../models/user');
 const verifyUser = (allowedRole) => {
-  return (req, res, next) => {
+  return async (req, res, next) => {
     const responses = getResponses(req.body.lang);
     const authHeader = req.headers.authorization || req.headers.Authorization;
     try {
@@ -22,12 +22,17 @@ const verifyUser = (allowedRole) => {
           message: responses.invalid_token,
         });
       }
-      if (decodedUser.user.role === allowedRole) {
-        next();
-      } else {
-        return res.status(403).json({
-          message: responses.not_allowded,
-        });
+
+      if (decodedUser) {
+        const id = decodedUser.id;
+        const user = await User.findOne({ id: id });
+        if (user.role === allowedRole) {
+          next();
+        } else {
+          return res.status(403).json({
+            message: responses.not_allowded,
+          });
+        }
       }
     } catch (error) {
       return res.status(502).json({

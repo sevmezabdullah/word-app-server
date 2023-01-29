@@ -8,6 +8,7 @@
     "unauth_request": "Yetkisiz kullanıcı talebi. Lütfen giriş yapın.",
     "invalid_token": "Geçersiz kullanıcı imzası. Lütfen tekrar giriş yapmayı deneyin.",
     "not_allowded": "Yetkisiz erişim isteğinde bulundunuz. Lütfen yöneticinizden yetkilendirme talep edin.",
-    "invalid_access": "Geçersiz erişim denemesi yaptınız. Lütfen tekrar giriş yapmayı deneyin."
+    "invalid_access": "Geçersiz erişim denemesi yaptınız. Lütfen tekrar giriş yapmayı deneyin.",
+    "empty_data": "Eksik yada geçersiz istekle bulundunuz. Lütfen formu doğru girerek tekrar deneyin."
   }
 }

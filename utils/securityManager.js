@@ -2,7 +2,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 async function generateJWT(user) {
-  const token = jwt.sign(user, process.env.JWT_SECRET);
+  const encodeUser = user.user;
+  const token = jwt.sign({ encodeUser: encodeUser.id }, process.env.JWT_SECRET);
   return token;
 }
 async function hashPassword(password) {

@@ -4,6 +4,7 @@ const { hashPassword } = require('../utils/securityManager');
 const { getResponses } = require('../utils/lang');
 const { generateJWT, comparePassword } = require('../utils/securityManager');
 const io = require('../app');
+
 async function register(request, response) {
   const responses = getResponses(request.body.lang);
   try {
@@ -12,6 +13,7 @@ async function register(request, response) {
     const user = { name, surname, email };
     user.password = hashedPassword;
     user.authSource = 'classic';
+    user.role = 2011;
     const createdUser = new User(user);
     const result = await createdUser.save();
 
@@ -28,7 +30,7 @@ async function register(request, response) {
     return response.status(502).json({ err: error });
   }
 }
-
+//Done
 async function login(request, response) {
   const responses = getResponses(request.body.lang);
   const { email, password } = request.body;
@@ -53,7 +55,10 @@ async function logout(request, response) {}
 async function changePassword(request, response) {}
 async function verifyAccount(request, response) {}
 async function signInWithGoogle(request, response) {}
-
+async function getUsers(request, response) {
+  const allUser = await User.find().select('-password -__v');
+  return response.status(200).json({ users: allUser, count: allUser.length });
+}
 module.exports = {
   register,
   login,
@@ -61,4 +66,5 @@ module.exports = {
   changePassword,
   verifyAccount,
   signInWithGoogle,
+  getUsers,
 };

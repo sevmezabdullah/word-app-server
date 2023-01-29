@@ -4,6 +4,10 @@
     "already_registered": "Zaten kayıtlı kullanıcısınız. Giriş ekranına yönlendiriliyorsunuz.",
     "signed_success": "Giriş Başarılı",
     "sign_fail": "Giriş başarısız. Lütfen e-posta ve şifrenizi kontrol ederek tekrar giriş yapmayı deneyin.",
-    "not_found_user": "E-posta adresinize kayıtlı hesap bulunamadı. Lütfen kayıt olarak tekrar giriş yapmayı deneyin."
+    "not_found_user": "E-posta adresinize kayıtlı hesap bulunamadı. Lütfen kayıt olarak tekrar giriş yapmayı deneyin.",
+    "unauth_request": "Yetkisiz kullanıcı talebi. Lütfen giriş yapın.",
+    "invalid_token": "Geçersiz kullanıcı imzası. Lütfen tekrar giriş yapmayı deneyin.",
+    "not_allowded": "Yetkisiz erişim isteğinde bulundunuz. Lütfen yöneticinizden yetkilendirme talep edin.",
+    "invalid_access": "Geçersiz erişim denemesi yaptınız. Lütfen tekrar giriş yapmayı deneyin."
   }
 }

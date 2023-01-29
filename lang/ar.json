@@ -2,6 +2,7 @@
   "responses": {
     "success_register": "تم التسجيل بنجاح. يرجى التحقق من حسابك عن طريق تأكيد البريد الإلكتروني الذي أرسلناه إلى عنوان بريدك الإلكتروني.",
     "already_registered": "أنت بالفعل مستخدم مسجل. يتم نقلك إلى شاشة تسجيل الدخول.",
-    "signed_success": "تم تسجيل الدخول بنجاح"
+    "signed_success": "تم تسجيل الدخول بنجاح",
+    "unauth_request": "Yetkisiz kullanıcı talebi. Lütfen giriş yapın."
   }
 }

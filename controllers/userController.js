@@ -22,7 +22,7 @@ async function register(request, response) {
     user.registerCode = registerCode;
     const createdUser = new User(user);
     const result = await createdUser.save();
-    sendEmail(email, responses.register_subject, user.registerCode, name);
+    // sendEmail(email, responses.register_subject, user.registerCode, name);
     // const isSent = await sendEmail(result.email);
     /*  if (isSent) {
  
@@ -48,14 +48,27 @@ async function login(request, response) {
 
     if (user) {
       const passwordVerify = await comparePassword(password, user.password);
-      if (passwordVerify) {
+      if (passwordVerify && user.isVerify) {
         const token = await generateJWT({ user });
         onlineUsers.push(user.email);
         io.emit('online', onlineUsers);
+
         return response.json({
           message: responses.signed_success,
           token: token,
+          name: user.name,
+          surname: user.surname,
+          currentLang: user.currentLang,
+          nativeLang: user.nativeLang,
+          level: user.level,
+          profilePic: user.profilePic,
+          exp: user.exp,
+          isVerify: user.isVerify,
         });
+      } else if (!user.isVerify) {
+        return response
+          .status(200)
+          .json({ message: responses.unverify_account });
       } else {
         return response.status(401).json({ message: responses.sign_fail });
       }
@@ -79,6 +92,7 @@ async function logout(request, response) {
   return response.status(200).json({ message: 'User logout' });
 }
 async function changePassword(request, response) {}
+
 async function verifyAccount(request, response) {
   const registerCode = request.params.registerCode;
   const user = await User.findOneAndUpdate(
@@ -89,12 +103,10 @@ async function verifyAccount(request, response) {
   if (user) {
     return response.status(200).json({ message: 'Kullanıcı doğrulandı' });
   }
-  return response
-    .status(200)
-    .json({
-      message:
-        'Kullanıcı doğrulaması başarısız. Kullanıcıyı daha önce doğrulamış yada kayıt oluşturmamış olabilirsiniz. Lütfen giriş yapmayı deneyin.',
-    });
+  return response.status(200).json({
+    message:
+      'Kullanıcı doğrulaması başarısız. Kullanıcıyı daha önce doğrulamış yada kayıt oluşturmamış olabilirsiniz. Lütfen giriş yapmayı deneyin.',
+  });
 }
 async function signInWithGoogle(request, response) {}
 async function getUsers(request, response) {

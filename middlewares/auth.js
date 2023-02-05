@@ -4,7 +4,12 @@ const { response } = require('express');
 const User = require('../models/user');
 const verifyUser = (allowedRole) => {
   return async (req, res, next) => {
-    const responses = getResponses(req.body.lang);
+    if (req.body.lang !== undefined) {
+      const responses = getResponses(req.body.lang);
+    } else {
+      const responses = getResponses('tr');
+    }
+
     const authHeader = req.headers.authorization || req.headers.Authorization;
     try {
       if (!authHeader?.startsWith('Bearer '))

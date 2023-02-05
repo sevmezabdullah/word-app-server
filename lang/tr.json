@@ -10,6 +10,7 @@
     "not_allowded": "Yetkisiz erişim isteğinde bulundunuz. Lütfen yöneticinizden yetkilendirme talep edin.",
     "invalid_access": "Geçersiz erişim denemesi yaptınız. Lütfen tekrar giriş yapmayı deneyin.",
     "empty_data": "Eksik yada geçersiz istekle bulundunuz. Lütfen formu doğru girerek tekrar deneyin.",
-    "register_subject": "Lütfen aktivasyon mailindeki bağlantıya tıklayarak hesabınızı onaylayın."
+    "register_subject": "Lütfen aktivasyon mailindeki bağlantıya tıklayarak hesabınızı onaylayın.",
+    "unverify_account": "Lütfen Eposta adresinize gelen talimatları tamamlayın"
   }
 }

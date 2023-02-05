@@ -3,6 +3,7 @@
     "success_register": "You successfully registered. Please check your email address to verify your account.",
     "already_registered": "You are already registered user. You are taken to the login screen.",
     "signed_success": "Login successful",
-    "unauth_request": "Unauthorized user request. Please login."
+    "unauth_request": "Unauthorized user request. Please login.",
+    "register_subject": "Please confirm your account by clicking the link in the activation mail."
   }
 }

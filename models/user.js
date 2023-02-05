@@ -46,6 +46,17 @@ const userSchema = mongoose.Schema({
     default:
       'https://www.seekpng.com/png/detail/847-8474751_download-empty-profile.png',
   },
+  registerCode: {
+    type: String,
+  },
+  currentLang: {
+    type: String,
+    default: null,
+  },
+  nativeLang: {
+    type: String,
+    default: null,
+  },
 });
 
 module.exports = mongoose.model('User', userSchema);

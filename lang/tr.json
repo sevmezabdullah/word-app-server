@@ -9,6 +9,7 @@
     "invalid_token": "Geçersiz kullanıcı imzası. Lütfen tekrar giriş yapmayı deneyin.",
     "not_allowded": "Yetkisiz erişim isteğinde bulundunuz. Lütfen yöneticinizden yetkilendirme talep edin.",
     "invalid_access": "Geçersiz erişim denemesi yaptınız. Lütfen tekrar giriş yapmayı deneyin.",
-    "empty_data": "Eksik yada geçersiz istekle bulundunuz. Lütfen formu doğru girerek tekrar deneyin."
+    "empty_data": "Eksik yada geçersiz istekle bulundunuz. Lütfen formu doğru girerek tekrar deneyin.",
+    "register_subject": "Lütfen aktivasyon mailindeki bağlantıya tıklayarak hesabınızı onaylayın."
   }
 }

@@ -3,24 +3,31 @@ const User = require('../models/user');
 const { hashPassword } = require('../utils/securityManager');
 const { getResponses } = require('../utils/lang');
 const { generateJWT, comparePassword } = require('../utils/securityManager');
-const io = require('../app');
+const randomize = require('randomatic');
 
+let onlineUsers = [];
 async function register(request, response) {
   const responses = getResponses(request.body.lang);
+
   try {
     const { name, surname, email, password } = request.body;
+
+    const registerCode = randomize('Aa0', 10);
+
     const hashedPassword = await hashPassword(password);
     const user = { name, surname, email };
     user.password = hashedPassword;
     user.authSource = 'classic';
     user.role = 2011;
+    user.registerCode = registerCode;
     const createdUser = new User(user);
     const result = await createdUser.save();
-
-    const isSent = await sendEmail(result.email);
-    if (isSent) {
-      return response.status(201).json({ message: responses.success_register });
-    }
+    sendEmail(email, responses.register_subject, user.registerCode, name);
+    // const isSent = await sendEmail(result.email);
+    /*  if (isSent) {
+ 
+    } */
+    return response.status(201).json({ message: responses.success_register });
   } catch (error) {
     if (error.code === 11000) {
       return response.status(400).json({
@@ -32,6 +39,7 @@ async function register(request, response) {
 }
 //Done
 async function login(request, response) {
+  const io = request.io;
   try {
     const responses = getResponses(request.body.lang);
     const { email, password } = request.body;
@@ -42,6 +50,8 @@ async function login(request, response) {
       const passwordVerify = await comparePassword(password, user.password);
       if (passwordVerify) {
         const token = await generateJWT({ user });
+        onlineUsers.push(user.email);
+        io.emit('online', onlineUsers);
         return response.json({
           message: responses.signed_success,
           token: token,
@@ -58,9 +68,34 @@ async function login(request, response) {
   }
 }
 
-async function logout(request, response) {}
+async function logout(request, response) {
+  const { userEmail } = request.body;
+  const io = request.io;
+
+  const newOnlineUsers = onlineUsers.filter((email) => email !== userEmail);
+  onlineUsers = [...newOnlineUsers];
+  io.emit('online', onlineUsers);
+
+  return response.status(200).json({ message: 'User logout' });
+}
 async function changePassword(request, response) {}
-async function verifyAccount(request, response) {}
+async function verifyAccount(request, response) {
+  const registerCode = request.params.registerCode;
+  const user = await User.findOneAndUpdate(
+    { registerCode: registerCode },
+    { isVerify: true, registerCode: '' },
+    { new: true }
+  );
+  if (user) {
+    return response.status(200).json({ message: 'Kullanıcı doğrulandı' });
+  }
+  return response
+    .status(200)
+    .json({
+      message:
+        'Kullanıcı doğrulaması başarısız. Kullanıcıyı daha önce doğrulamış yada kayıt oluşturmamış olabilirsiniz. Lütfen giriş yapmayı deneyin.',
+    });
+}
 async function signInWithGoogle(request, response) {}
 async function getUsers(request, response) {
   const allUser = await User.find().select('-password -__v');

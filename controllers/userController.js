@@ -70,14 +70,14 @@ async function login(request, response) {
           .status(200)
           .json({ message: responses.unverify_account });
       } else {
-        return response.status(401).json({ message: responses.sign_fail });
+        return response.status(200).json({ message: responses.sign_fail });
       }
     }
     if (!user) {
-      return response.status(404).json({ message: responses.not_found_user });
+      return response.status(200).json({ message: responses.not_found_user });
     }
   } catch (error) {
-    return response.status(502).json({ message: error });
+    return response.status(200).json({ message: error });
   }
 }
 

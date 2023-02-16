@@ -64,6 +64,7 @@ async function login(request, response) {
           profilePic: user.profilePic,
           exp: user.exp,
           isVerify: user.isVerify,
+          id: user._id,
         });
       } else if (!user.isVerify) {
         return response
@@ -113,6 +114,23 @@ async function getUsers(request, response) {
   const allUser = await User.find().select('-password -__v');
   return response.status(200).json({ users: allUser, count: allUser.length });
 }
+
+async function updateLang(request, response) {
+  const { userId, currentLang, nativeLang } = request.body;
+
+  try {
+    const user = await User.findByIdAndUpdate(userId, {
+      currentLang: currentLang,
+      nativeLang: nativeLang,
+    }).select('currentLang nativeLang');
+
+    if (user !== null) {
+      return response.json({ user, currentLang, nativeLang });
+    }
+  } catch (error) {
+    return response.json({ message: 'Hata oluştu', error: error });
+  }
+}
 module.exports = {
   register,
   login,
@@ -121,4 +139,5 @@ module.exports = {
   verifyAccount,
   signInWithGoogle,
   getUsers,
+  updateLang,
 };

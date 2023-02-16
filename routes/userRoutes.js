@@ -6,6 +6,7 @@ const {
   signInWithGoogle,
   verifyAccount,
   getUsers,
+  updateLang,
 } = require('../controllers/userController');
 
 const express = require('express');
@@ -20,5 +21,6 @@ userRouter.post('/logout', logout);
 userRouter.post('/signInGoogle', signInWithGoogle);
 userRouter.get('/verifyAccount/:registerCode', verifyAccount);
 userRouter.get('/getAllUser', verifyUser(ROLES_LIST.User), getUsers);
+userRouter.put('/updateLang', updateLang);
 
 module.exports = userRouter;

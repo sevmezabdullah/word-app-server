@@ -1,18 +1,15 @@
 const mongoose = require('mongoose');
 
 const CategorySchema = mongoose.Schema({
-  title: {
-    type: String,
+  titles: {
+    type: mongoose.Schema.Types.Mixed,
     required: true,
   },
   imageUri: {
     type: String,
     required: true,
   },
-  nativeLangCode: {
-    type: String,
-    required: true,
-  },
+
   awardId: {
     type: String,
     required: true,

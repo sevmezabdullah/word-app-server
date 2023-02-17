@@ -10,6 +10,7 @@ const io = new Server(server);
 const userRouter = require('./routes/userRoutes');
 const categoryRouter = require('./routes/categoryRoutes');
 const { connectDB } = require('./utils/db');
+const languageRouter = require('./routes/languageRoutes');
 
 const PORT = process.env.PORT;
 app.use(require('./middlewares/middlewares').global.socketIo(io));
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use('/users', userRouter);
 app.use('/category', categoryRouter);
+app.use('/language', languageRouter);
 
 server.listen(PORT, serverStart);
 

@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const { Server } = require('socket.io');
 const morgan = require('morgan');
 require('dotenv').config({ path: './config/config.env' });
@@ -13,9 +14,11 @@ const { connectDB } = require('./utils/db');
 const languageRouter = require('./routes/languageRoutes');
 
 const PORT = process.env.PORT;
+
 app.use(require('./middlewares/middlewares').global.socketIo(io));
 app.use(express.json());
 app.use(morgan('dev'));
+app.use(cors({ origin: 'http://localhost:3001', credentials: false }));
 app.use('/users', userRouter);
 app.use('/category', categoryRouter);
 app.use('/language', languageRouter);

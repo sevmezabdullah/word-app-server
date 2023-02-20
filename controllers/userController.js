@@ -111,8 +111,102 @@ async function verifyAccount(request, response) {
 }
 async function signInWithGoogle(request, response) {}
 async function getUsers(request, response) {
-  const allUser = await User.find().select('-password -__v');
-  return response.status(200).json({ users: allUser, count: allUser.length });
+  try {
+    const allUser = await User.find().select('-password -__v');
+    return response.status(200).json({ users: allUser, count: allUser.length });
+  } catch (error) {
+    return response.status(404).json({ users: [], error: error });
+  }
+}
+
+async function getUserByStats(request, response) {
+  const { year } = request.params;
+  const january = await User.find({
+    createdAt: {
+      $gte: new Date(`${year}-01-01`),
+      $lt: new Date(`${year}-01-31`),
+    },
+  });
+  const february = await User.find({
+    createdAt: {
+      $gte: new Date(`${year}-02-01`),
+      $lt: new Date(`${year}-02-31`),
+    },
+  });
+  const march = await User.find({
+    createdAt: {
+      $gte: new Date(`${year}-03-01`),
+      $lt: new Date(`${year}-03-31`),
+    },
+  });
+  const april = await User.find({
+    createdAt: {
+      $gte: new Date(`${year}-04-01`),
+      $lt: new Date(`${year}-04-31`),
+    },
+  });
+  const may = await User.find({
+    createdAt: {
+      $gte: new Date(`${year}-05-01`),
+      $lt: new Date(`${year}-05-31`),
+    },
+  });
+  const june = await User.find({
+    createdAt: {
+      $gte: new Date(`${year}-06-01`),
+      $lt: new Date(`${year}-06-31`),
+    },
+  });
+  const july = await User.find({
+    createdAt: {
+      $gte: new Date(`${year}-07-01`),
+      $lt: new Date(`${year}-07-31`),
+    },
+  });
+  const august = await User.find({
+    createdAt: {
+      $gte: new Date(`${year}-08-01`),
+      $lt: new Date(`${year}-08-31`),
+    },
+  });
+  const september = await User.find({
+    createdAt: {
+      $gte: new Date(`${year}-09-01`),
+      $lt: new Date(`${year}-09-31`),
+    },
+  });
+  const october = await User.find({
+    createdAt: {
+      $gte: new Date(`${year}-10-01`),
+      $lt: new Date(`${year}-10-31`),
+    },
+  });
+  const november = await User.find({
+    createdAt: {
+      $gte: new Date(`${year}-11-01`),
+      $lt: new Date(`${year}-11-31`),
+    },
+  });
+  const december = await User.find({
+    createdAt: {
+      $gte: new Date(`${year}-12-01`),
+      $lt: new Date(`${year}-12-31`),
+    },
+  });
+  return response.json({
+    january: january.length,
+    february: february.length,
+    march: march.length,
+    april: april.length,
+    may: may.length,
+    june: june.length,
+    july: july.length,
+    august: august.length,
+    september: september.length,
+    october: october.length,
+    november: november.length,
+    december: december.length,
+  });
 }
 
 async function updateLang(request, response) {
@@ -140,4 +234,5 @@ module.exports = {
   signInWithGoogle,
   getUsers,
   updateLang,
+  getUserByStats,
 };

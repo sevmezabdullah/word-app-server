@@ -7,7 +7,9 @@ require('dotenv').config({ path: './config/config.env' });
 const app = express();
 
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {cors:{
+  origin:'*'
+}});
 
 const userRouter = require('./routes/userRoutes');
 const categoryRouter = require('./routes/categoryRoutes');

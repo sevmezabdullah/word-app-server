@@ -42,7 +42,7 @@ async function login(request, response) {
   const io = request.io;
   try {
     const responses = getResponses(request.body.lang);
-    const { email, password } = request.body;
+    const { email, password, sessionId } = request.body;
 
     const user = await User.findOne({ email: email });
 
@@ -50,7 +50,8 @@ async function login(request, response) {
       const passwordVerify = await comparePassword(password, user.password);
       if (passwordVerify && user.isVerify) {
         const token = await generateJWT({ user });
-        onlineUsers.push(user.email);
+        const session = { email: user.email, sessionId: sessionId };
+        onlineUsers.push(session);
         io.emit('online', onlineUsers);
 
         return response.json({
@@ -83,10 +84,12 @@ async function login(request, response) {
 }
 
 async function logout(request, response) {
-  const { userEmail } = request.body;
+  const { userEmail, sessionId } = request.body;
   const io = request.io;
 
-  const newOnlineUsers = onlineUsers.filter((email) => email !== userEmail);
+  const newOnlineUsers = onlineUsers.filter(
+    (session) => session.sessionId !== sessionId
+  );
   onlineUsers = [...newOnlineUsers];
   io.emit('online', onlineUsers);
 

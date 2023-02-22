@@ -7,9 +7,11 @@ require('dotenv').config({ path: './config/config.env' });
 const app = express();
 
 const server = http.createServer(app);
-const io = new Server(server, {cors:{
-  origin:'*'
-}});
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+  },
+});
 
 const userRouter = require('./routes/userRoutes');
 const categoryRouter = require('./routes/categoryRoutes');
@@ -17,6 +19,7 @@ const { connectDB } = require('./utils/db');
 const languageRouter = require('./routes/languageRoutes');
 const quizRouter = require('./routes/quizRoutes');
 const questionRouter = require('./routes/questionRoutes');
+const wordRouter = require('./routes/wordRoutes');
 
 const PORT = process.env.PORT;
 
@@ -29,6 +32,7 @@ app.use('/category', categoryRouter);
 app.use('/language', languageRouter);
 app.use('/quiz', quizRouter);
 app.use('/question', questionRouter);
+app.use('/words', wordRouter);
 
 server.listen(PORT, serverStart);
 

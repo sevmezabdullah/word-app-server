@@ -27,10 +27,23 @@ async function deleteQuestion(request, response) {
 }
 async function updateQuestion(request, response) {}
 async function getQuestionById(request, response) {}
+async function getAllQuestion(request, response) {
+  try {
+    const questions = await Question.find();
+    if (questions) {
+      return response.status(200).json(questions);
+    } else {
+      return response.status(200).json([]);
+    }
+  } catch (error) {
+    return response.status(404).json({ error: error });
+  }
+}
 
 module.exports = {
   create,
   deleteQuestion,
   getQuestionById,
   updateQuestion,
+  getAllQuestion,
 };

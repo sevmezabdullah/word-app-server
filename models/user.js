@@ -72,6 +72,22 @@ const userSchema = mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  //Tamamlanan Quiz ID,Tarih ve Doğru(hangi soru doğru) Yanlış(hangi soru yanlış) şeklinde bilgisi eklenecek
+  completedQuiz: {
+    type: [mongoose.Schema.Types.Mixed],
+  },
+
+  knownWords: {
+    type: [mongoose.Schema.Types.ObjectId],
+    default: [],
+    ref: 'Word',
+  },
+
+  unknownWords: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Word',
+    default: [],
+  },
 });
 
 module.exports = mongoose.model('User', userSchema);

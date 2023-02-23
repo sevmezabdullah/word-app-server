@@ -6,10 +6,28 @@ async function getAllCategories(request, response) {
 }
 
 async function postCategory(request, response) {
-  const { titles, imageUri, awardId } = request.body;
-  const category = { titles, imageUri, awardId };
+  const imageUri = request.file.filename;
+
+  const { titles, awardId } = request.body;
+
+  const formattedTitles = JSON.parse(titles);
+
+  const category = {
+    titles: formattedTitles,
+    imageUri:
+      process.env.PROTOCOL +
+      request.hostname +
+      ':' +
+      process.env.PORT +
+      '/' +
+      'uploads/' +
+      imageUri,
+    awardId,
+  };
   const createdCategory = new Category(category);
   const result = await createdCategory.save();
+
+  console.log(request.hostname);
   return response.status(201).json({ message: result });
 }
 async function deleteCategoryById(request, response) {

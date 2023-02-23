@@ -20,13 +20,23 @@ const languageRouter = require('./routes/languageRoutes');
 const quizRouter = require('./routes/quizRoutes');
 const questionRouter = require('./routes/questionRoutes');
 const wordRouter = require('./routes/wordRoutes');
-
+const multer = require('multer');
+const upload = multer();
 const PORT = process.env.PORT;
 
 app.use(require('./middlewares/middlewares').global.socketIo(io));
 app.use(express.json());
+/* app.use(upload.array()); */
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
 app.use(morgan('dev'));
 app.use(cors({ origin: 'http://localhost:3001', credentials: false }));
+
+app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use('/users', userRouter);
 app.use('/category', categoryRouter);
 app.use('/language', languageRouter);

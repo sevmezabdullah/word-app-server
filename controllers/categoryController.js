@@ -6,29 +6,32 @@ async function getAllCategories(request, response) {
 }
 
 async function postCategory(request, response) {
-  const imageUri = request.file.filename;
+  try {
+    const imageUri = request.file.filename;
 
-  const { titles, awardId } = request.body;
+    const { titles, awardId } = request.body;
 
-  const formattedTitles = JSON.parse(titles);
+    const formattedTitles = JSON.parse(titles);
 
-  const category = {
-    titles: formattedTitles,
-    imageUri:
-      process.env.PROTOCOL +
-      request.hostname +
-      ':' +
-      process.env.PORT +
-      '/' +
-      'uploads/' +
-      imageUri,
-    awardId,
-  };
-  const createdCategory = new Category(category);
-  const result = await createdCategory.save();
+    const category = {
+      titles: formattedTitles,
+      logo:
+        process.env.PROTOCOL +
+        request.hostname +
+        ':' +
+        process.env.PORT +
+        '/' +
+        'uploads/' +
+        imageUri,
+      awardId,
+    };
+    const createdCategory = new Category(category);
+    const result = await createdCategory.save();
 
-  console.log(request.hostname);
-  return response.status(201).json({ message: result });
+    return response.status(201).json(result);
+  } catch (error) {
+    return response.status(404).json(error);
+  }
 }
 async function deleteCategoryById(request, response) {
   const { id } = request.body;

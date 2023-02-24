@@ -20,6 +20,10 @@ const quizSchema = mongoose.Schema({
     type: [mongoose.Types.ObjectId],
     ref: 'Question',
   },
+  point: {
+    type: Number,
+    default: 0,
+  },
 });
 
 module.exports = mongoose.model('Quiz', quizSchema);

@@ -5,7 +5,7 @@ const CategorySchema = mongoose.Schema({
     type: mongoose.Schema.Types.Mixed,
     required: true,
   },
-  imageUri: {
+  logo: {
     type: String,
     required: true,
   },

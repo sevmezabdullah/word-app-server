@@ -78,15 +78,17 @@ const userSchema = mongoose.Schema({
   },
 
   knownWords: {
-    type: [mongoose.Schema.Types.ObjectId],
+    type: [mongoose.Schema.Types.Mixed],
     default: [],
-    ref: 'Word',
   },
 
   unknownWords: {
-    type: [mongoose.Schema.Types.ObjectId],
-    ref: 'Word',
+    type: [mongoose.Schema.Types.Mixed],
     default: [],
+  },
+
+  league: {
+    type: String,
   },
 });
 

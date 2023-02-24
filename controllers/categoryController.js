@@ -10,7 +10,7 @@ async function postCategory(request, response) {
     const imageUri = request.file.filename;
 
     const { titles, awardId } = request.body;
-
+    console.log(titles);
     const formattedTitles = JSON.parse(titles);
 
     const category = {

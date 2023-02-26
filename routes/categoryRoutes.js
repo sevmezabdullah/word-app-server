@@ -21,11 +21,19 @@ const {
   postCategory,
   getCategoryById,
   deleteCategoryById,
+  addWordToCategory,
+  getWordsByCategoryId,
+  removeWordFromCategory,
 } = require('../controllers/categoryController');
 const categoryRoutes = express.Router();
 const type = upload.single('logo');
 categoryRoutes.get('/categories', getAllCategories);
 categoryRoutes.post('/create', type, postCategory);
 categoryRoutes.get('/:categoryId', getCategoryById);
+
 categoryRoutes.post('/delete', deleteCategoryById);
+categoryRoutes.post('/addWord', addWordToCategory);
+categoryRoutes.post('/removeWord', removeWordFromCategory);
+categoryRoutes.get('/getWords/:categoryId', getWordsByCategoryId);
+
 module.exports = categoryRoutes;

@@ -1,7 +1,7 @@
 const Word = require('../models/word');
 async function create(request, response) {
   const { words, sentences } = request.body;
-  console.log(words, sentences);
+
   const word = {
     words: words,
     sentences: sentences,
@@ -10,7 +10,17 @@ async function create(request, response) {
   const result = await saveWord.save();
   return response.status(201).json(result);
 }
-async function deleteWord(request, response) {}
+async function deleteWord(request, response) {
+  const { wordId } = request.body;
+  try {
+    if (wordId) {
+      const result = await Word.findByIdAndDelete(wordId);
+      return response.status(200).json(result);
+    }
+  } catch (error) {
+    return response.status(400).json(error);
+  }
+}
 async function updateWord(request, response) {}
 async function getAllWords(request, response) {
   try {

@@ -80,12 +80,13 @@ async function getCategoryById(request, response) {
 }
 
 async function addWordToCategory(request, response) {
-  const { categoryId, wordId } = request.body.categoryId;
+  const { categoryId, wordId } = request.body;
 
   try {
     const result = await Category.findByIdAndUpdate(categoryId, {
       $push: { words: wordId },
     });
+    console.log(result);
     if (result) {
       return response.status(200).json(result);
     }

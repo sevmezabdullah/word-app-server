@@ -1,12 +1,16 @@
 const mongoose = require('mongoose');
 
 const questionSchema = mongoose.Schema({
-  word: { type: mongoose.Schema.Types.ObjectId, ref: 'Word' },
-  answerA: { type: mongoose.Schema.Types.ObjectId, ref: 'Word' },
-  answerB: { type: mongoose.Schema.Types.ObjectId, ref: 'Word' },
-  answerC: { type: mongoose.Schema.Types.ObjectId, ref: 'Word' },
-  answerD: { type: mongoose.Schema.Types.ObjectId, ref: 'Word' },
-  answerCorrect: { type: mongoose.Schema.Types.ObjectId, ref: 'Word' },
+  question: { type: String, required: true },
+  answerA: { type: mongoose.Schema.Types.Mixed, required: true },
+  answerB: { type: mongoose.Schema.Types.Mixed, required: true },
+  answerC: { type: mongoose.Schema.Types.Mixed, required: true },
+  answerD: { type: mongoose.Schema.Types.Mixed, required: true },
+  answerCorrect: { type: mongoose.Schema.Types.Mixed, required: true },
+  langCode: {
+    type: String,
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now(),

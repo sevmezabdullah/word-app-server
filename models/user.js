@@ -77,18 +77,11 @@ const userSchema = mongoose.Schema({
     type: [mongoose.Schema.Types.Mixed],
   },
 
+  // Öğrenilen kelimeler
+  // Öğrenildiği tarih ve saat
   knownWords: {
     type: [mongoose.Schema.Types.Mixed],
     default: [],
-  },
-
-  unknownWords: {
-    type: [mongoose.Schema.Types.Mixed],
-    default: [],
-  },
-
-  league: {
-    type: String,
   },
 });
 

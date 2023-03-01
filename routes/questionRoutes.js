@@ -10,5 +10,7 @@ const {
 const questionRouter = express.Router();
 
 questionRouter.get('/getAll', getAllQuestion);
+questionRouter.post('/post', create);
+questionRouter.post('/delete', deleteQuestion);
 
 module.exports = questionRouter;

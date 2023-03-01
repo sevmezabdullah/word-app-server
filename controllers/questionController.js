@@ -1,28 +1,47 @@
 const Question = require('../models/question');
 async function create(request, response) {
-  const { word, answerA, answerB, answerC, answerD } = request.body;
-
-  const createdQuestion = new Question({
-    word,
+  const {
+    question,
     answerA,
     answerB,
     answerC,
     answerD,
-  });
-  const result = await createdQuestion.save();
-  if (result !== null) {
-    return response.status(201).json({ message: 'Soru oluşturuldu.' });
+    langCode,
+    difficulty,
+    answerCorrect,
+  } = request.body;
+
+  try {
+    const createdQuestion = new Question({
+      question,
+      answerA,
+      answerB,
+      answerC,
+      answerD,
+      langCode,
+      difficulty,
+      answerCorrect,
+    });
+    const result = await createdQuestion.save();
+    if (result !== null) {
+      return response.status(201).json(result);
+    }
+  } catch (error) {
+    if (error) {
+      return response.status(404).json(error);
+    }
   }
 }
 async function deleteQuestion(request, response) {
-  const { id } = request.body;
+  const { id } = request.body.id;
+
   try {
     const result = await Question.findByIdAndDelete(id);
     if (result !== null) {
-      return response.json({ message: 'Soru Silindi' });
+      return response.json(result);
     }
   } catch (error) {
-    return response.json({ error: error, message: 'Hata oluştu' });
+    return response.status(404).json({ error: error, message: 'Hata oluştu' });
   }
 }
 async function updateQuestion(request, response) {}

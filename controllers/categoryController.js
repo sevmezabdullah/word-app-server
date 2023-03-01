@@ -20,13 +20,19 @@ async function getWordsByCategoryId(request, response) {
 }
 
 async function removeWordFromCategory(request, response) {
-  const { categoryId, wordId } = request.body;
+  const { categoryId, wordId } = request.body.wordId;
+  try {
+    const result = await Category.findByIdAndUpdate(categoryId, {
+      $pull: { words: wordId },
+    });
 
-  const result = await Category.findByIdAndUpdate(categoryId, {
-    $pull: { words: wordId },
-  });
-
-  return response.status(200).json(result);
+    if (result) {
+      const category = await Category.findById(categoryId);
+      return response.status(200).json(category);
+    }
+  } catch (error) {
+    return response.status(404).json(error);
+  }
 }
 async function getCategoryById(request, response) {
   const { categoryId } = request.params;
@@ -86,9 +92,10 @@ async function addWordToCategory(request, response) {
     const result = await Category.findByIdAndUpdate(categoryId, {
       $push: { words: wordId },
     });
-    console.log(result);
+
     if (result) {
-      return response.status(200).json(result);
+      const category = await Category.findById(categoryId);
+      return response.status(200).json(category);
     }
   } catch (error) {
     return response.status(404).json(error);

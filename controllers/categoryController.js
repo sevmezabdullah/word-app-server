@@ -37,6 +37,7 @@ async function removeWordFromCategory(request, response) {
 async function getCategoryById(request, response) {
   const { categoryId } = request.params;
   const category = await Category.findById(categoryId);
+  console.log(category);
   return response.status(200).json(category);
 }
 async function postCategory(request, response) {

@@ -26,8 +26,31 @@ async function getQuestionByTitle(request, response) {
   }
 }
 
+async function create(request, response) {
+  const { title, exp, difficult, questions, currentLangCode } = request.body;
+
+  console.log(request.body);
+  const quiz = new Quiz({
+    title: title,
+    exp: exp,
+    difficult: difficult,
+    questions: questions,
+    currentLangCode: currentLangCode,
+  });
+  const result = await quiz.save();
+  return response.status(201).json(result);
+}
+
+async function deleteQuiz(request, response) {
+  const { id } = request.body;
+  await Quiz.findByIdAndDelete(id);
+  const result = await Quiz.find();
+  return response.status(200).json(result);
+}
 module.exports = {
   getAllQuestion,
   getQuestionById,
   getQuestionByTitle,
+  create,
+  deleteQuiz,
 };

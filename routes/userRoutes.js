@@ -9,6 +9,8 @@ const {
   getUserByStats,
   updateLang,
   addWordToKnown,
+  addDeckToUser,
+  getUserAwardDeck,
 } = require('../controllers/userController');
 
 const express = require('express');
@@ -27,5 +29,7 @@ userRouter.get('/stats/:year', getUserByStats);
 userRouter.get('/getAllUser', getUsers);
 userRouter.put('/updateLang', updateLang);
 userRouter.post('/addWordToKnown', addWordToKnown);
+userRouter.post('/addAwardToUser', addDeckToUser);
+userRouter.get('/getUserAwardDeck/:userId', getUserAwardDeck);
 
 module.exports = userRouter;

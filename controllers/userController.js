@@ -66,6 +66,7 @@ async function login(request, response) {
           exp: user.exp,
           isVerify: user.isVerify,
           id: user._id,
+          categoryAwardsIds: user.categoryAwardsIds,
         });
       } else if (!user.isVerify) {
         return response
@@ -238,6 +239,24 @@ async function addWordToKnown(request, response) {
   return response.status(200).json(result);
 }
 
+async function addDeckToUser(request, response) {
+  const { awardId, userId } = request.body;
+
+  const result = await User.findByIdAndUpdate(userId, {
+    $addToSet: { categoryAwardsIds: `${awardId}` },
+  });
+  return response.status(200).json(result);
+}
+
+async function getUserAwardDeck(request, response) {
+  const { userId } = request.params;
+  const result = await User.findById(userId).select({
+    categoryAwardsIds: 1,
+    _id: 0,
+  });
+  return response.status(200).json(result);
+}
+
 module.exports = {
   register,
   login,
@@ -249,4 +268,6 @@ module.exports = {
   getUsers,
   updateLang,
   getUserByStats,
+  addDeckToUser,
+  getUserAwardDeck,
 };

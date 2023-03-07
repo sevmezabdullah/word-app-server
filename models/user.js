@@ -27,7 +27,7 @@ const userSchema = mongoose.Schema({
     default: false,
   },
   categoryAwardsIds: {
-    type: [mongoose.Schema.Types.ObjectId],
+    type: [String],
     default: [],
   },
   password: {

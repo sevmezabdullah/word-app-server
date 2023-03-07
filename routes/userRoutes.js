@@ -8,6 +8,7 @@ const {
   getUsers,
   getUserByStats,
   updateLang,
+  addWordToKnown,
 } = require('../controllers/userController');
 
 const express = require('express');
@@ -25,5 +26,6 @@ userRouter.get('/verifyAccount/:registerCode', verifyAccount);
 userRouter.get('/stats/:year', getUserByStats);
 userRouter.get('/getAllUser', getUsers);
 userRouter.put('/updateLang', updateLang);
+userRouter.post('/addWordToKnown', addWordToKnown);
 
 module.exports = userRouter;

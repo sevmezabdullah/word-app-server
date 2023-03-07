@@ -228,9 +228,20 @@ async function updateLang(request, response) {
     return response.json({ message: 'Hata oluştu', error: error });
   }
 }
+
+async function addWordToKnown(request, response) {
+  const { id, knownWords } = request.body;
+
+  const result = await User.findByIdAndUpdate(id, {
+    $addToSet: { knownWords: knownWords },
+  });
+  return response.status(200).json(result);
+}
+
 module.exports = {
   register,
   login,
+  addWordToKnown,
   logout,
   changePassword,
   verifyAccount,

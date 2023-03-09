@@ -28,6 +28,7 @@ const {
 const categoryRoutes = express.Router();
 const type = upload.single('logo');
 categoryRoutes.get('/categories', getAllCategories);
+
 categoryRoutes.post('/create', type, postCategory);
 categoryRoutes.get('/:categoryId', getCategoryById);
 

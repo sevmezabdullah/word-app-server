@@ -19,6 +19,10 @@ const CategorySchema = mongoose.Schema({
     default: Date.now(),
   },
   words: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Word' }],
+  quizId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Quiz',
+  },
 });
 
 module.exports = mongoose.model('Category', CategorySchema);

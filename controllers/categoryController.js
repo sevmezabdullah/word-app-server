@@ -102,7 +102,20 @@ async function addWordToCategory(request, response) {
     return response.status(404).json(error);
   }
 }
+async function addQuizToCategory(request, response) {
+  const { categoryId, quizId } = request.body.quizId;
+  const result = await Category.findByIdAndUpdate(categoryId, {
+    quizId: quizId,
+  });
+  return response.status(200).json(result);
+}
+async function deleteQuizToCategory(request, response) {
+  const categoryId = request.body.categoryId;
 
+  const result = await Category.findByIdAndUpdate(categoryId, { quizId: null });
+  console.log(result);
+  return response.status(200).json(result);
+}
 module.exports = {
   getAllCategories,
   postCategory,
@@ -110,5 +123,7 @@ module.exports = {
   deleteCategoryById,
   addWordToCategory,
   getWordsByCategoryId,
+  deleteQuizToCategory,
   removeWordFromCategory,
+  addQuizToCategory,
 };

@@ -24,6 +24,8 @@ const {
   addWordToCategory,
   getWordsByCategoryId,
   removeWordFromCategory,
+  addQuizToCategory,
+  deleteQuizToCategory,
 } = require('../controllers/categoryController');
 const categoryRoutes = express.Router();
 const type = upload.single('logo');
@@ -34,6 +36,8 @@ categoryRoutes.get('/:categoryId', getCategoryById);
 
 categoryRoutes.post('/delete', deleteCategoryById);
 categoryRoutes.post('/addWord', addWordToCategory);
+categoryRoutes.post('/addQuizToCategory', addQuizToCategory);
+categoryRoutes.post('/deleteQuizToCategory', deleteQuizToCategory);
 categoryRoutes.post('/removeWord', removeWordFromCategory);
 categoryRoutes.get('/getWords/:categoryId', getWordsByCategoryId);
 

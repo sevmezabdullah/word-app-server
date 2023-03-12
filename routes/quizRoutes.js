@@ -1,7 +1,7 @@
 const express = require('express');
 const {
   getAllQuestion,
-  getQuestionById,
+  getQuizById,
   getQuestionByTitle,
   create,
   deleteQuiz,
@@ -9,7 +9,7 @@ const {
 const quizRouter = express.Router();
 
 quizRouter.get('/getAll', getAllQuestion);
-quizRouter.get('/:id', getQuestionById);
+quizRouter.get('/:id', getQuizById);
 quizRouter.get('/:title', getQuestionByTitle);
 quizRouter.post('/post', create);
 quizRouter.post('/delete', deleteQuiz);

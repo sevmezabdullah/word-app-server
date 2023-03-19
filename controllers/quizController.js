@@ -9,17 +9,32 @@ async function getAllQuestion(request, response) {
 }
 async function getQuizById(request, response) {
   const { id } = request.params;
-  console.log(id);
-  if (id !== null) {
+  console.log('Quiz ID : ', id);
+  if (id !== null && id !== 'undefined') {
     const quiz = await Quiz.findById(id).populate('questions');
     if (quiz) {
+      console.log('By ID : ', quiz);
       return response.status(200).json(quiz);
     } else {
       return response.status(404).json(null);
     }
   }
   if (id === null || id === undefined) {
-    return response.status(200).json(null);
+    return response.status(200).json([]);
+  }
+}
+async function getQuizByDifficulty(request, response) {
+  const { difficulty, currentLang } = request.params;
+
+  if (difficulty !== 'undefined') {
+    const quiz = await Quiz.findOne({
+      difficult: difficulty,
+      currentLangCode: currentLang,
+    }).populate('questions');
+
+    return response.status(200).json(quiz);
+  } else {
+    return response.status(200).json([]);
   }
 }
 async function getQuestionByTitle(request, response) {
@@ -59,4 +74,5 @@ module.exports = {
   getQuestionByTitle,
   create,
   deleteQuiz,
+  getQuizByDifficulty,
 };

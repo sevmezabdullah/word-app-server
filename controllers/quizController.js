@@ -13,7 +13,6 @@ async function getQuizById(request, response) {
   if (id !== null && id !== 'undefined') {
     const quiz = await Quiz.findById(id).populate('questions');
     if (quiz) {
-      console.log('By ID : ', quiz);
       return response.status(200).json(quiz);
     } else {
       return response.status(404).json(null);

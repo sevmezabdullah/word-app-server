@@ -11,6 +11,7 @@ const {
   addWordToKnown,
   addDeckToUser,
   getUserAwardDeck,
+  addCompletedQuiz,
 } = require('../controllers/userController');
 
 const express = require('express');
@@ -31,5 +32,6 @@ userRouter.put('/updateLang', updateLang);
 userRouter.post('/addWordToKnown', addWordToKnown);
 userRouter.post('/addAwardToUser', addDeckToUser);
 userRouter.get('/getUserAwardDeck/:userId', getUserAwardDeck);
+userRouter.post('/addCompletedQuiz', addCompletedQuiz);
 
 module.exports = userRouter;

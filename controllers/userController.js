@@ -248,6 +248,21 @@ async function addDeckToUser(request, response) {
   return response.status(200).json(result);
 }
 
+async function addCompletedQuiz(request, response) {
+  const { quizId, result, userId } = request.body;
+  const date = new Date();
+  result.date = date;
+  const dbResult = await User.findByIdAndUpdate(userId, {
+    $addToSet: { completedQuiz: { quizId: quizId } },
+  });
+
+  if (dbResult) {
+    return response.status(200).json(dbResult);
+  } else {
+    return response.status(404).json({ message: 'Hata meydana geldi.' });
+  }
+}
+
 async function getUserAwardDeck(request, response) {
   const { userId } = request.params;
   const result = await User.findById(userId).select({
@@ -270,4 +285,5 @@ module.exports = {
   getUserByStats,
   addDeckToUser,
   getUserAwardDeck,
+  addCompletedQuiz,
 };

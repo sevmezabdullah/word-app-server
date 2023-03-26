@@ -4,9 +4,8 @@
   "description": "Word App Web API",
   "main": "app.js",
   "scripts": {
-    "first-dev": "npm uninstall bcrypt && npm install bcrypt && nodemon app.js",
-    "dev": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "first-dev": "git pull && npm uninstall bcrypt && npm install bcrypt && nodemon app.js",
+    "dev": "nodemon app.js"
   },
   "author": "Abdullah SEVMEZ",
   "license": "ISC",

@@ -1,4 +1,5 @@
 const Quiz = require('../models/quiz');
+const User = require('../models/user');
 async function getAllQuestion(request, response) {
   const quizs = await Quiz.find();
   if (quizs) {
@@ -23,13 +24,22 @@ async function getQuizById(request, response) {
   }
 }
 async function getQuizByDifficulty(request, response) {
-  const { difficulty, currentLang } = request.params;
+  const { difficulty, currentLang, userId } = request.params;
 
   if (difficulty !== 'undefined') {
+    const user = await User.findById(userId);
+    console.log(user.completedQuiz);
+
     const quiz = await Quiz.findOne({
       difficult: difficulty,
       currentLangCode: currentLang,
     }).populate('questions');
+
+    const quizId = quiz._id;
+    console.log(
+      '🚀 ~ file: quizController.js:39 ~ getQuizByDifficulty ~ quizId:',
+      quizId
+    );
 
     return response.status(200).json(quiz);
   } else {

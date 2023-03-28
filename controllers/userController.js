@@ -249,11 +249,9 @@ async function addDeckToUser(request, response) {
 }
 
 async function addCompletedQuiz(request, response) {
-  const { quizId, result, userId } = request.body;
-  const date = new Date();
-  result.date = date;
+  const { resultId, userId } = request.body;
   const dbResult = await User.findByIdAndUpdate(userId, {
-    $addToSet: { completedQuiz: { quizId: quizId } },
+    $push: { completedResult: resultId },
   });
 
   if (dbResult) {

@@ -74,7 +74,8 @@ const userSchema = mongoose.Schema({
   },
   //Tamamlanan Quiz ID,Tarih ve Doğru(hangi soru doğru) Yanlış(hangi soru yanlış) şeklinde bilgisi eklenecek
   completedQuiz: {
-    type: [mongoose.Schema.Types.Mixed],
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'QuizResults',
   },
 
   // Öğrenilen kelimeler

@@ -24,11 +24,6 @@ async function createQuizResult(request, response) {
   }
 }
 
-async function updateQuizResult(request, response) {
-  const { userId, quizId, result } = request.body;
-}
-
 module.exports = {
   createQuizResult,
-  updateQuizResult,
 };

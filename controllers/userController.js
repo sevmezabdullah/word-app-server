@@ -270,6 +270,26 @@ async function getUserAwardDeck(request, response) {
   return response.status(200).json(result);
 }
 
+async function getUserStat(request, response) {
+  const { userId } = request.params;
+
+  const results = await User.findById(userId);
+  const dates = formatDateForStat(results);
+
+  return response.status(200).json({ result: results.knownWords });
+}
+
+const formatDateForStat = (results) => {
+  const dates = [];
+  results.knownWords.forEach((item) => {
+    const splitDate = item.date.split('-');
+
+    const date = new Date(splitDate[2], splitDate[1], splitDate[0]);
+    dates.push(date);
+  });
+  return dates;
+};
+
 module.exports = {
   register,
   login,
@@ -284,4 +304,5 @@ module.exports = {
   addDeckToUser,
   getUserAwardDeck,
   addCompletedQuiz,
+  getUserStat,
 };

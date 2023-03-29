@@ -28,18 +28,13 @@ async function getQuizByDifficulty(request, response) {
 
   if (difficulty !== 'undefined') {
     const user = await User.findById(userId);
-    console.log(user.completedQuiz);
 
     const quiz = await Quiz.findOne({
       difficult: difficulty,
       currentLangCode: currentLang,
     }).populate('questions');
 
-    const quizId = quiz._id;
-    console.log(
-      '🚀 ~ file: quizController.js:39 ~ getQuizByDifficulty ~ quizId:',
-      quizId
-    );
+    /*    const quizId = quiz._id; */
 
     return response.status(200).json(quiz);
   } else {

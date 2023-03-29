@@ -263,11 +263,16 @@ async function addCompletedQuiz(request, response) {
 
 async function getUserAwardDeck(request, response) {
   const { userId } = request.params;
-  const result = await User.findById(userId).select({
-    categoryAwardsIds: 1,
-    _id: 0,
-  });
-  return response.status(200).json(result);
+  try {
+    const result = await User.findById(userId).select({
+      categoryAwardsIds: 1,
+      _id: 0,
+    });
+    return response.status(200).json(result);
+  } catch (error) {
+    return response.status(404).json(error)
+  }
+  
 }
 
 async function getUserStat(request, response) {
@@ -290,6 +295,24 @@ const formatDateForStat = (results) => {
   return dates;
 };
 
+async function resetProcess(request, response) {
+  const { userId } = request.body;
+
+  try {
+    const result = await User.findByIdAndUpdate(userId, {
+      knownWords: [],
+      completedQuiz: [],
+      categoryAwardsIds: [],
+      exp: 0,
+      level: 1,
+    });
+    if (result) {
+      return response.status(200).json(result);
+    }
+  } catch (error) {
+    return response.status(404).json({ message: 'Hata meydana geldi' });
+  }
+}
 module.exports = {
   register,
   login,
@@ -305,4 +328,5 @@ module.exports = {
   getUserAwardDeck,
   addCompletedQuiz,
   getUserStat,
+  resetProcess,
 };

@@ -13,6 +13,7 @@ const {
   getUserAwardDeck,
   addCompletedQuiz,
   getUserStat,
+  resetProcess,
 } = require('../controllers/userController');
 
 const express = require('express');
@@ -35,5 +36,6 @@ userRouter.post('/addAwardToUser', addDeckToUser);
 userRouter.get('/getUserAwardDeck/:userId', getUserAwardDeck);
 userRouter.post('/addCompletedQuiz', addCompletedQuiz);
 userRouter.get('/getUserStat/:userId', getUserStat);
+userRouter.post('/resetProcess', resetProcess);
 
 module.exports = userRouter;

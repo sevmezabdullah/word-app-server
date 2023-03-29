@@ -249,7 +249,7 @@ async function addDeckToUser(request, response) {
 }
 
 async function addCompletedQuiz(request, response) {
-  const { resultId, userId } = request.body;
+  const { resultId, userId, exp } = request.body;
   const dbResult = await User.findByIdAndUpdate(userId, {
     $push: { completedResult: resultId },
   });
@@ -258,6 +258,19 @@ async function addCompletedQuiz(request, response) {
     return response.status(200).json(dbResult);
   } else {
     return response.status(404).json({ message: 'Hata meydana geldi.' });
+  }
+}
+
+async function incrementExp(request, response) {
+  const { userId, exp } = request.body;
+  console.log(userId.exp);
+  try {
+    const result = await User.findByIdAndUpdate(userId.userId, {
+      $inc: { exp: userId.exp },
+    });
+    return response.status(200).json({ exp: result.exp });
+  } catch (error) {
+    return response.status(404).json(error);
   }
 }
 
@@ -270,9 +283,8 @@ async function getUserAwardDeck(request, response) {
     });
     return response.status(200).json(result);
   } catch (error) {
-    return response.status(404).json(error)
+    return response.status(404).json(error);
   }
-  
 }
 
 async function getUserStat(request, response) {
@@ -313,6 +325,7 @@ async function resetProcess(request, response) {
     return response.status(404).json({ message: 'Hata meydana geldi' });
   }
 }
+
 module.exports = {
   register,
   login,
@@ -329,4 +342,5 @@ module.exports = {
   addCompletedQuiz,
   getUserStat,
   resetProcess,
+  incrementExp,
 };

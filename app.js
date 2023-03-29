@@ -22,6 +22,7 @@ const questionRouter = require('./routes/questionRoutes');
 const wordRouter = require('./routes/wordRoutes');
 const multer = require('multer');
 const quizResultRouter = require('./routes/quizResults');
+const requestRouter = require('./routes/requestsRoute');
 const upload = multer();
 const PORT = process.env.PORT;
 
@@ -45,6 +46,7 @@ app.use('/quiz', quizRouter);
 app.use('/question', questionRouter);
 app.use('/words', wordRouter);
 app.use('/quizResult', quizResultRouter);
+app.use('/requests', requestRouter);
 server.listen(PORT, serverStart);
 
 function serverStart() {

@@ -4,7 +4,7 @@ const { hashPassword } = require('../utils/securityManager');
 const { getResponses } = require('../utils/lang');
 const { generateJWT, comparePassword } = require('../utils/securityManager');
 const randomize = require('randomatic');
-
+const QuizResults = require('../models/quizResults');
 let onlineUsers = [];
 async function register(request, response) {
   const responses = getResponses(request.body.lang);
@@ -291,21 +291,26 @@ async function getUserStat(request, response) {
   const { userId } = request.params;
 
   const results = await User.findById(userId);
-  const dates = formatDateForStat(results);
+  const quizResults = await QuizResults.find({ userId: userId });
+  let totalCorrectAnswer = 0;
+  let totalWrongAnswer = 0;
 
-  return response.status(200).json({ result: results.knownWords });
-}
-
-const formatDateForStat = (results) => {
-  const dates = [];
-  results.knownWords.forEach((item) => {
-    const splitDate = item.date.split('-');
-
-    const date = new Date(splitDate[2], splitDate[1], splitDate[0]);
-    dates.push(date);
+  quizResults.forEach((item) => {
+    totalCorrectAnswer += item.result.correctCount;
   });
-  return dates;
-};
+
+  quizResults.forEach((item) => {
+    totalWrongAnswer += item.result.wrongCount;
+  });
+  return response.status(200).json({
+    result: {
+      completedQuizCount: quizResults.length,
+      knownWordCount: results.knownWords.length,
+      correctAnswerCount: totalCorrectAnswer,
+      wrongAnswerCount: totalWrongAnswer,
+    },
+  });
+}
 
 async function resetProcess(request, response) {
   const { userId } = request.body;
@@ -318,6 +323,7 @@ async function resetProcess(request, response) {
       exp: 0,
       level: 1,
     });
+    await QuizResults.deleteMany({ userId: userId });
     if (result) {
       return response.status(200).json(result);
     }

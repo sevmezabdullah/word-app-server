@@ -5,6 +5,7 @@ const { getResponses } = require('../utils/lang');
 const { generateJWT, comparePassword } = require('../utils/securityManager');
 const randomize = require('randomatic');
 const QuizResults = require('../models/quizResults');
+const quizResults = require('../models/quizResults');
 let onlineUsers = [];
 async function register(request, response) {
   const responses = getResponses(request.body.lang);
@@ -332,6 +333,23 @@ async function resetProcess(request, response) {
   }
 }
 
+async function getUserAwards(request, response) {
+  const { userId } = request.params;
+  const user = await User.findById(userId);
+  console.log('🚀 ~ file: userController.js:338 ~ getUserAwards ~ user:', user);
+  const userQuizResults = await QuizResults.find({ userId: userId });
+  console.log(
+    '🚀 ~ file: userController.js:340 ~ getUserAwards ~ userQuizResults:',
+    userQuizResults
+  );
+
+  if (quizResults) {
+    return response.status(200).json({ userQuizResults });
+  } else {
+    return response.status(404).json({ message: '' });
+  }
+}
+
 module.exports = {
   register,
   login,
@@ -349,4 +367,5 @@ module.exports = {
   getUserStat,
   resetProcess,
   incrementExp,
+  getUserAwards,
 };

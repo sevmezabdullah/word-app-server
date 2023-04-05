@@ -332,6 +332,33 @@ async function resetProcess(request, response) {
   }
 }
 
+async function getUserAwards(request, response) {
+  const { userId } = request.params;
+
+  try {
+    const user = await User.findById(userId);
+    const quizResults = await QuizResults.find({ userId: userId });
+
+    let totalCorrectAnswer = 0;
+    let nonWrongQuiz = 0;
+    quizResults.forEach((item) => {
+      totalCorrectAnswer += item.result.correctCount;
+      if (item.result.wrongCount === 0) {
+        nonWrongQuiz++;
+      }
+    });
+    return response.status(200).json({
+      knownWordCount: user.knownWords.length,
+      quizResultsCount: quizResults.length,
+      totalCorrectAnswer: totalCorrectAnswer,
+      nonWrongQuiz: nonWrongQuiz,
+    });
+  } catch (error) {
+    if (error) {
+      return response.status(404).json(error);
+    }
+  }
+}
 module.exports = {
   register,
   login,
@@ -349,4 +376,5 @@ module.exports = {
   getUserStat,
   resetProcess,
   incrementExp,
+  getUserAwards,
 };

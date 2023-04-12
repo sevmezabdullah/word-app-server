@@ -29,6 +29,7 @@ async function register(request, response) {
     } */
     return response.status(201).json({ message: responses.success_register });
   } catch (error) {
+    console.log(error.code);
     if (error.code === 11000) {
       return response.status(400).json({
         message: responses.already_registered,
@@ -295,6 +296,7 @@ async function getUserStat(request, response) {
   let totalCorrectAnswer = 0;
   let totalWrongAnswer = 0;
 
+  const knownWordsIds = [];
   quizResults.forEach((item) => {
     totalCorrectAnswer += item.result.correctCount;
   });
@@ -302,6 +304,11 @@ async function getUserStat(request, response) {
   quizResults.forEach((item) => {
     totalWrongAnswer += item.result.wrongCount;
   });
+
+  results.knownWords.forEach((item) => {
+    knownWordsIds.push(item.word);
+  });
+
   return response.status(200).json({
     result: {
       completedQuizCount: quizResults.length,
@@ -311,7 +318,9 @@ async function getUserStat(request, response) {
     },
   });
 }
-
+function onlyUnique(value, index, array) {
+  return array.indexOf(value) === index;
+}
 async function resetProcess(request, response) {
   const { userId } = request.body;
 
@@ -360,6 +369,22 @@ async function getUserAwards(request, response) {
   }
 }
 
+async function getWordCountByDate(request, response) {
+  const { userId } = request.params;
+  const date = new Date();
+  const month = date.getDay() + 1;
+  const today = date.getDate() + '-' + month + '-' + date.getFullYear();
+  const user = await User.findById(userId);
+  let wordCount = 0;
+  user.knownWords.map((item, index) => {
+    if (item.date === today) {
+      wordCount++;
+    }
+  });
+
+  return response.status(200).json({ learnedWordCount: wordCount });
+}
+
 module.exports = {
   register,
   login,
@@ -378,4 +403,5 @@ module.exports = {
   resetProcess,
   incrementExp,
   getUserAwards,
+  getWordCountByDate,
 };

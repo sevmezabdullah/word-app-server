@@ -16,6 +16,7 @@ const {
   resetProcess,
   incrementExp,
   getUserAwards,
+  getWordCountByDate,
 } = require('../controllers/userController');
 
 const express = require('express');
@@ -41,5 +42,6 @@ userRouter.get('/getUserStat/:userId', getUserStat);
 userRouter.get('/getUserAward/:userId', getUserAwards);
 userRouter.post('/resetProcess', resetProcess);
 userRouter.post('/incrementExp', incrementExp);
+userRouter.get('/getWordCountByDate/:userId', getWordCountByDate);
 
 module.exports = userRouter;

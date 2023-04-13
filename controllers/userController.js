@@ -318,9 +318,7 @@ async function getUserStat(request, response) {
     },
   });
 }
-function onlyUnique(value, index, array) {
-  return array.indexOf(value) === index;
-}
+
 async function resetProcess(request, response) {
   const { userId } = request.body;
 
@@ -372,7 +370,7 @@ async function getUserAwards(request, response) {
 async function getWordCountByDate(request, response) {
   const { userId } = request.params;
   const date = new Date();
-  const month = date.getDay() + 1;
+  const month = date.getDay();
   const today = date.getDate() + '-' + month + '-' + date.getFullYear();
   const user = await User.findById(userId);
   let wordCount = 0;

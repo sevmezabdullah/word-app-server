@@ -4,6 +4,12 @@ async function getAllCategories(request, response) {
   const categories = await Category.find();
   return response.status(200).json(categories);
 }
+
+async function getCategoriesByLangCodes(request, response) {
+  const { nativeLang, currentLang } = request.params;
+
+  return response.status(200).json({ nativeLang, currentLang });
+}
 async function getWordsByCategoryId(request, response) {
   const { categoryId } = request.params;
   try {
@@ -126,4 +132,5 @@ module.exports = {
   deleteQuizToCategory,
   removeWordFromCategory,
   addQuizToCategory,
+  getCategoriesByLangCodes,
 };

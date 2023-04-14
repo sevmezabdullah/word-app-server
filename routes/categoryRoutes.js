@@ -26,11 +26,15 @@ const {
   removeWordFromCategory,
   addQuizToCategory,
   deleteQuizToCategory,
+  getCategoriesByLangCodes,
 } = require('../controllers/categoryController');
 const categoryRoutes = express.Router();
 const type = upload.single('logo');
 categoryRoutes.get('/categories', getAllCategories);
-
+categoryRoutes.get(
+  '/categories/:nativeLang/:currentLang',
+  getCategoriesByLangCodes
+);
 categoryRoutes.post('/create', type, postCategory);
 categoryRoutes.get('/:categoryId', getCategoryById);
 

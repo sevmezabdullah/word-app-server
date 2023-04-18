@@ -7,8 +7,12 @@ async function getAllCategories(request, response) {
 
 async function getCategoriesByLangCodes(request, response) {
   const { nativeLang, currentLang } = request.params;
-
-  return response.status(200).json({ nativeLang, currentLang });
+  console.log(nativeLang);
+  const categories = await Category.find({
+    'titles.langCode': nativeLang,
+    'titles.langCode': currentLang,
+  });
+  return response.status(200).json({ categories });
 }
 async function getWordsByCategoryId(request, response) {
   const { categoryId } = request.params;

@@ -6,6 +6,12 @@ const { generateJWT, comparePassword } = require('../utils/securityManager');
 const randomize = require('randomatic');
 const QuizResults = require('../models/quizResults');
 let onlineUsers = [];
+
+async function getUserById(request, response) {
+  const { userId } = request.params;
+  const user = await User.findById(userId);
+  return response.status(200).json(user);
+}
 async function register(request, response) {
   const responses = getResponses(request.body.lang);
 
@@ -402,4 +408,5 @@ module.exports = {
   incrementExp,
   getUserAwards,
   getWordCountByDate,
+  getUserById,
 };

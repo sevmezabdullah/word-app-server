@@ -18,6 +18,7 @@ const {
   getUserAwards,
   getWordCountByDate,
   getUserById,
+  forgetPassword,
 } = require('../controllers/userController');
 
 const express = require('express');
@@ -45,5 +46,6 @@ userRouter.post('/resetProcess', resetProcess);
 userRouter.post('/incrementExp', incrementExp);
 userRouter.get('/getWordCountByDate/:userId', getWordCountByDate);
 userRouter.get('/:userId', getUserById);
+userRouter.post('/forgetPassword', forgetPassword);
 
 module.exports = userRouter;

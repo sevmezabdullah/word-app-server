@@ -44,6 +44,7 @@ async function register(request, response) {
     return response.status(502).json({ err: error });
   }
 }
+
 //Done
 async function login(request, response) {
   const io = request.io;
@@ -103,7 +104,16 @@ async function logout(request, response) {
 
   return response.status(200).json({ message: 'User logout' });
 }
-async function changePassword(request, response) {}
+async function changePassword(request, response) {
+  const { userId, password } = request.body;
+
+  const hashedPassword = await hashPassword(password);
+
+  const user = await User.findByIdAndUpdate(userId, {
+    password: hashedPassword,
+  });
+  return response.status(200).json(user);
+}
 
 async function verifyAccount(request, response) {
   const registerCode = request.params.registerCode;
@@ -299,10 +309,14 @@ async function getUserStat(request, response) {
 
   const results = await User.findById(userId);
   const quizResults = await QuizResults.find({ userId: userId });
+
+  const knownWordsCount = await User.findById(userId).distinct(
+    'knownWords.word'
+  );
+
   let totalCorrectAnswer = 0;
   let totalWrongAnswer = 0;
 
-  const knownWordsIds = [];
   quizResults.forEach((item) => {
     totalCorrectAnswer += item.result.correctCount;
   });
@@ -311,18 +325,26 @@ async function getUserStat(request, response) {
     totalWrongAnswer += item.result.wrongCount;
   });
 
-  results.knownWords.forEach((item) => {
-    knownWordsIds.push(item.word);
-  });
-
   return response.status(200).json({
     result: {
       completedQuizCount: quizResults.length,
-      knownWordCount: results.knownWords.length,
+      knownWordCount: knownWordsCount.length,
       correctAnswerCount: totalCorrectAnswer,
       wrongAnswerCount: totalWrongAnswer,
     },
   });
+}
+
+async function forgetPassword(request, response) {
+  const { email } = request.body;
+
+  const user = await User.findOne({ email: email });
+  if (user)
+    return response.status(200).json({ message: 'Email gönderildi.', email });
+  else
+    return response
+      .status(404)
+      .json({ message: 'Kullanıcı bulunamadı', email });
 }
 
 async function resetProcess(request, response) {
@@ -336,6 +358,11 @@ async function resetProcess(request, response) {
       exp: 0,
       level: 1,
     });
+    console.log(
+      '🚀 ~ file: userController.js:348 ~ resetProcess ~ result:',
+      result
+    );
+
     await QuizResults.deleteMany({ userId: userId });
     if (result) {
       return response.status(200).json(result);
@@ -347,6 +374,10 @@ async function resetProcess(request, response) {
 
 async function getUserAwards(request, response) {
   const { userId } = request.params;
+  console.log(
+    '🚀 ~ file: userController.js:365 ~ getUserAwards ~ userId:',
+    userId
+  );
 
   try {
     const user = await User.findById(userId);
@@ -376,9 +407,11 @@ async function getUserAwards(request, response) {
 async function getWordCountByDate(request, response) {
   const { userId } = request.params;
   const date = new Date();
-  const month = date.getDay();
+  const month = date.getDay() - 1;
   const today = date.getDate() + '-' + month + '-' + date.getFullYear();
+
   const user = await User.findById(userId);
+
   let wordCount = 0;
   user.knownWords.map((item, index) => {
     if (item.date === today) {
@@ -409,4 +442,5 @@ module.exports = {
   getUserAwards,
   getWordCountByDate,
   getUserById,
+  forgetPassword,
 };

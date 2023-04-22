@@ -374,10 +374,6 @@ async function resetProcess(request, response) {
 
 async function getUserAwards(request, response) {
   const { userId } = request.params;
-  console.log(
-    '🚀 ~ file: userController.js:365 ~ getUserAwards ~ userId:',
-    userId
-  );
 
   try {
     const user = await User.findById(userId);
@@ -407,7 +403,7 @@ async function getUserAwards(request, response) {
 async function getWordCountByDate(request, response) {
   const { userId } = request.params;
   const date = new Date();
-  const month = date.getDay() - 1;
+  const month = date.getMonth() + 1;
   const today = date.getDate() + '-' + month + '-' + date.getFullYear();
 
   const user = await User.findById(userId);

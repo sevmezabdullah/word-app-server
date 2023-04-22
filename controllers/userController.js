@@ -266,7 +266,7 @@ async function addDeckToUser(request, response) {
 }
 
 async function addCompletedQuiz(request, response) {
-  const { resultId, userId, exp } = request.body;
+  const { resultId, userId } = request.body;
   const dbResult = await User.findByIdAndUpdate(userId, {
     $push: { completedResult: resultId },
   });
@@ -280,11 +280,20 @@ async function addCompletedQuiz(request, response) {
 
 async function incrementExp(request, response) {
   const { userId, exp } = request.body;
-  console.log(userId.exp);
+  console.log(
+    '🚀 ~ file: userController.js:283 ~ incrementExp ~ userId:',
+    userId
+  );
+  console.log('🚀 ~ file: userController.js:283 ~ incrementExp ~ exp:', exp);
+
   try {
-    const result = await User.findByIdAndUpdate(userId.userId, {
-      $inc: { exp: userId.exp },
+    const result = await User.findByIdAndUpdate(userId, {
+      $inc: { exp: exp },
     });
+    console.log(
+      '🚀 ~ file: userController.js:293 ~ incrementExp ~ result:',
+      result
+    );
     return response.status(200).json({ exp: result.exp });
   } catch (error) {
     return response.status(404).json(error);

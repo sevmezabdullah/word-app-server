@@ -9,8 +9,12 @@ let onlineUsers = [];
 
 async function getUserById(request, response) {
   const { userId } = request.params;
-  const user = await User.findById(userId);
-  return response.status(200).json(user);
+  try {
+    const user = await User.findById(userId);
+    return response.status(200).json(user);
+  } catch (error) {
+    return response.status(404).json(error);
+  }
 }
 async function register(request, response) {
   const responses = getResponses(request.body.lang);
@@ -280,20 +284,12 @@ async function addCompletedQuiz(request, response) {
 
 async function incrementExp(request, response) {
   const { userId, exp } = request.body;
-  console.log(
-    '🚀 ~ file: userController.js:283 ~ incrementExp ~ userId:',
-    userId
-  );
-  console.log('🚀 ~ file: userController.js:283 ~ incrementExp ~ exp:', exp);
 
   try {
     const result = await User.findByIdAndUpdate(userId, {
       $inc: { exp: exp },
     });
-    console.log(
-      '🚀 ~ file: userController.js:293 ~ incrementExp ~ result:',
-      result
-    );
+
     return response.status(200).json({ exp: result.exp });
   } catch (error) {
     return response.status(404).json(error);
@@ -315,33 +311,36 @@ async function getUserAwardDeck(request, response) {
 
 async function getUserStat(request, response) {
   const { userId } = request.params;
+  try {
+    const results = await User.findById(userId);
+    const quizResults = await QuizResults.find({ userId: userId });
 
-  const results = await User.findById(userId);
-  const quizResults = await QuizResults.find({ userId: userId });
+    const knownWordsCount = await User.findById(userId).distinct(
+      'knownWords.word'
+    );
 
-  const knownWordsCount = await User.findById(userId).distinct(
-    'knownWords.word'
-  );
+    let totalCorrectAnswer = 0;
+    let totalWrongAnswer = 0;
 
-  let totalCorrectAnswer = 0;
-  let totalWrongAnswer = 0;
+    quizResults.forEach((item) => {
+      totalCorrectAnswer += item.result.correctCount;
+    });
 
-  quizResults.forEach((item) => {
-    totalCorrectAnswer += item.result.correctCount;
-  });
+    quizResults.forEach((item) => {
+      totalWrongAnswer += item.result.wrongCount;
+    });
 
-  quizResults.forEach((item) => {
-    totalWrongAnswer += item.result.wrongCount;
-  });
-
-  return response.status(200).json({
-    result: {
-      completedQuizCount: quizResults.length,
-      knownWordCount: knownWordsCount.length,
-      correctAnswerCount: totalCorrectAnswer,
-      wrongAnswerCount: totalWrongAnswer,
-    },
-  });
+    return response.status(200).json({
+      result: {
+        completedQuizCount: quizResults.length,
+        knownWordCount: knownWordsCount.length,
+        correctAnswerCount: totalCorrectAnswer,
+        wrongAnswerCount: totalWrongAnswer,
+      },
+    });
+  } catch (error) {
+    return response.status(404).json(error);
+  }
 }
 
 async function forgetPassword(request, response) {
@@ -414,17 +413,20 @@ async function getWordCountByDate(request, response) {
   const date = new Date();
   const month = date.getMonth() + 1;
   const today = date.getDate() + '-' + month + '-' + date.getFullYear();
+  try {
+    const user = await User.findById(userId);
 
-  const user = await User.findById(userId);
+    let wordCount = 0;
+    user.knownWords.map((item, index) => {
+      if (item.date === today) {
+        wordCount++;
+      }
+    });
 
-  let wordCount = 0;
-  user.knownWords.map((item, index) => {
-    if (item.date === today) {
-      wordCount++;
-    }
-  });
-
-  return response.status(200).json({ learnedWordCount: wordCount });
+    return response.status(200).json({ learnedWordCount: wordCount });
+  } catch (error) {
+    return response.status(404).json(error);
+  }
 }
 
 module.exports = {

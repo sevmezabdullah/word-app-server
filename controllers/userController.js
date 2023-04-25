@@ -281,6 +281,7 @@ async function addCompletedQuiz(request, response) {
     $push: { completedResult: resultId },
   });
 
+  try {
     if (dbResult) {
       return response.status(200).json(dbResult);
     }
@@ -321,12 +322,13 @@ async function getUserAwardDeck(request, response) {
 }
 
 async function getUserStat(request, response) {
-  const { userId } = request.params;
+  try {
+    const { userId } = request.params;
 
-  const results = await User.findById(userId);
-  const quizResults = await QuizResults.find({ userId: userId });
-  let totalCorrectAnswer = 0;
-  let totalWrongAnswer = 0;
+    const results = await User.findById(userId);
+    const quizResults = await QuizResults.find({ userId: userId });
+    let totalCorrectAnswer = 0;
+    let totalWrongAnswer = 0;
 
     quizResults.forEach((item) => {
       totalCorrectAnswer += item.result.correctCount;

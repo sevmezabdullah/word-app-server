@@ -1,9 +1,16 @@
 {
   "responses": {
-    "success_register": "You successfully registered. Please check your email address to verify your account.",
-    "already_registered": "You are already registered user. You are taken to the login screen.",
-    "signed_success": "Login successful",
-    "unauth_request": "Unauthorized user request. Please login.",
-    "register_subject": "Please confirm your account by clicking the link in the activation mail."
+    "success_register": "Kayıt işlemi başarılı. Lütfen E-Posta adresinize gönderdiğimiz maili onaylayarak hesabınızı doğrulayın.",
+    "already_registered": "Zaten kayıtlı kullanıcısınız. Giriş ekranına yönlendiriliyorsunuz.",
+    "signed_success": "Giriş Başarılı",
+    "sign_fail": "Giriş başarısız. Lütfen e-posta ve şifrenizi kontrol ederek tekrar giriş yapmayı deneyin.",
+    "not_found_user": "E-posta adresinize kayıtlı hesap bulunamadı. Lütfen kayıt olarak tekrar giriş yapmayı deneyin.",
+    "unauth_request": "Yetkisiz kullanıcı talebi. Lütfen giriş yapın.",
+    "invalid_token": "Geçersiz kullanıcı imzası. Lütfen tekrar giriş yapmayı deneyin.",
+    "not_allowded": "Yetkisiz erişim isteğinde bulundunuz. Lütfen yöneticinizden yetkilendirme talep edin.",
+    "invalid_access": "Geçersiz erişim denemesi yaptınız. Lütfen tekrar giriş yapmayı deneyin.",
+    "empty_data": "Eksik yada geçersiz istekle bulundunuz. Lütfen formu doğru girerek tekrar deneyin.",
+    "register_subject": "Lütfen aktivasyon mailindeki bağlantıya tıklayarak hesabınızı onaylayın.",
+    "unverify_account": "Lütfen Eposta adresinize gelen talimatları tamamlayın"
   }
 }

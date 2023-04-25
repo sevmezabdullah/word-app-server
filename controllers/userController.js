@@ -8,9 +8,14 @@ const QuizResults = require('../models/quizResults');
 let onlineUsers = [];
 
 async function getUserById(request, response) {
-  const { userId } = request.params;
-  const user = await User.findById(userId);
-  return response.status(200).json(user);
+  try {
+    const { userId } = request.params;
+
+    const user = await User.findById(userId);
+    return response.status(200).json(user);
+  } catch (error) {
+    return response.status(404).json(error);
+  }
 }
 async function register(request, response) {
   const responses = getResponses(request.body.lang);
@@ -74,20 +79,26 @@ async function login(request, response) {
           isVerify: user.isVerify,
           id: user._id,
           categoryAwardsIds: user.categoryAwardsIds,
+          isLogged: true,
+          user: user,
         });
       } else if (!user.isVerify) {
         return response
           .status(200)
-          .json({ message: responses.unverify_account });
+          .json({ message: responses.unverify_account, isLogged: false });
       } else {
-        return response.status(200).json({ message: responses.sign_fail });
+        return response
+          .status(200)
+          .json({ message: responses.sign_fail, isLogged: false });
       }
     }
     if (!user) {
-      return response.status(200).json({ message: responses.not_found_user });
+      return response
+        .status(200)
+        .json({ message: responses.not_found_user, isLogged: false });
     }
   } catch (error) {
-    return response.status(200).json({ message: error });
+    return response.status(200).json({ message: error, isLogged: false });
   }
 }
 
@@ -240,10 +251,14 @@ async function updateLang(request, response) {
 async function addWordToKnown(request, response) {
   const { id, knownWords } = request.body;
 
-  const result = await User.findByIdAndUpdate(id, {
-    $addToSet: { knownWords: knownWords },
-  });
-  return response.status(200).json(result);
+  try {
+    const result = await User.findByIdAndUpdate(id, {
+      $addToSet: { knownWords: knownWords },
+    });
+    return response.status(200).json(result);
+  } catch (error) {
+    return response.status(404).json(error);
+  }
 }
 
 async function addDeckToUser(request, response) {
@@ -256,21 +271,28 @@ async function addDeckToUser(request, response) {
 }
 
 async function addCompletedQuiz(request, response) {
-  const { resultId, userId, exp } = request.body;
-  const dbResult = await User.findByIdAndUpdate(userId, {
-    $push: { completedResult: resultId },
-  });
+  const { resultId, userId } = request.body;
 
-  if (dbResult) {
-    return response.status(200).json(dbResult);
-  } else {
-    return response.status(404).json({ message: 'Hata meydana geldi.' });
+  try {
+    const dbResult = await User.findByIdAndUpdate(userId, {
+      $push: { completedResult: resultId },
+    });
+
+    if (dbResult) {
+      return response.status(200).json(dbResult);
+    }
+  } catch (error) {
+    return response.status(404).json({ error });
   }
 }
 
 async function incrementExp(request, response) {
   const { userId, exp } = request.body;
-  console.log(userId.exp);
+  console.log(
+    '🚀 ~ file: userController.js:290 ~ incrementExp ~ userId:',
+    userId
+  );
+
   try {
     const result = await User.findByIdAndUpdate(userId.userId, {
       $inc: { exp: userId.exp },
@@ -283,6 +305,10 @@ async function incrementExp(request, response) {
 
 async function getUserAwardDeck(request, response) {
   const { userId } = request.params;
+  console.log(
+    '🚀 ~ file: userController.js:303 ~ getUserAwardDeck ~ userId:',
+    userId
+  );
   try {
     const result = await User.findById(userId).select({
       categoryAwardsIds: 1,
@@ -296,6 +322,10 @@ async function getUserAwardDeck(request, response) {
 
 async function getUserStat(request, response) {
   const { userId } = request.params;
+  console.log(
+    '🚀 ~ file: userController.js:316 ~ getUserStat ~ userId:',
+    userId
+  );
 
   const results = await User.findById(userId);
   const quizResults = await QuizResults.find({ userId: userId });
@@ -327,6 +357,10 @@ async function getUserStat(request, response) {
 
 async function resetProcess(request, response) {
   const { userId } = request.body;
+  console.log(
+    '🚀 ~ file: userController.js:347 ~ resetProcess ~ userId:',
+    userId
+  );
 
   try {
     const result = await User.findByIdAndUpdate(userId, {
@@ -347,6 +381,10 @@ async function resetProcess(request, response) {
 
 async function getUserAwards(request, response) {
   const { userId } = request.params;
+  console.log(
+    '🚀 ~ file: userController.js:367 ~ getUserAwards ~ userId:',
+    userId
+  );
 
   try {
     const user = await User.findById(userId);

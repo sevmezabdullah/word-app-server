@@ -7,7 +7,7 @@ async function getAllCategories(request, response) {
 
 async function getCategoriesByLangCodes(request, response) {
   const { nativeLang, currentLang } = request.params;
-  console.log(nativeLang);
+
   const categories = await Category.find({
     'titles.langCode': nativeLang,
     'titles.langCode': currentLang,

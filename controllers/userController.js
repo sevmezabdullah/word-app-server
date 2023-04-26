@@ -305,16 +305,13 @@ async function incrementExp(request, response) {
 
 async function getUserAwardDeck(request, response) {
   const { userId } = request.params;
-  console.log(
-    '🚀 ~ file: userController.js:303 ~ getUserAwardDeck ~ userId:',
-    userId
-  );
+
   try {
     const result = await User.findById(userId).select({
       categoryAwardsIds: 1,
       _id: 0,
     });
-    return response.status(200).json(result);
+    return response.status(200).json(result.categoryAwardsIds);
   } catch (error) {
     return response.status(404).json(error);
   }
@@ -343,6 +340,7 @@ async function getUserStat(request, response) {
         knownWordCount: results.knownWords.length,
         correctAnswerCount: totalCorrectAnswer,
         wrongAnswerCount: totalWrongAnswer,
+        quizResults,
       },
     });
   } catch (error) {

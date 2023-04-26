@@ -291,9 +291,8 @@ async function addCompletedQuiz(request, response) {
 }
 
 async function incrementExp(request, response) {
-  const { userId, exp } = request.body;
-  console.log(userId.exp);
   try {
+    const { userId, exp } = request.body;
     const result = await User.findByIdAndUpdate(userId, {
       $inc: { exp: exp },
     });
@@ -341,7 +340,7 @@ async function getUserStat(request, response) {
     return response.status(200).json({
       result: {
         completedQuizCount: quizResults.length,
-        knownWordCount: knownWordsCount.length,
+        knownWordCount: results.knownWords.length,
         correctAnswerCount: totalCorrectAnswer,
         wrongAnswerCount: totalWrongAnswer,
       },

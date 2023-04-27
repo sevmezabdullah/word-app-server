@@ -25,14 +25,24 @@ async function getQuizById(request, response) {
 }
 async function getQuizByDifficulty(request, response) {
   const { difficulty, currentLang, userId } = request.params;
+  console.log(
+    '🚀 ~ file: quizController.js:28 ~ getQuizByDifficulty ~ difficulty:',
+    difficulty
+  );
+
+  const total = await Quiz.countDocuments({});
+
+  const skip = Math.floor(Math.random() * total);
 
   if (difficulty !== 'undefined') {
-    const user = await User.findById(userId);
+    /*    const user = await User.findById(userId); */
 
     const quiz = await Quiz.findOne({
       difficult: difficulty,
       currentLangCode: currentLang,
-    }).populate('questions');
+    })
+      .skip(skip)
+      .populate('questions');
 
     /*    const quizId = quiz._id; */
 

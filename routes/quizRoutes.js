@@ -11,10 +11,7 @@ const quizRouter = express.Router();
 
 quizRouter.get('/getAll', getAllQuestion);
 quizRouter.get('/:id', getQuizById);
-quizRouter.get(
-  '/difficulty/:difficulty/:currentLang/:userId',
-  getQuizByDifficulty
-);
+quizRouter.get('/difficulty/:difficulty/:currentLang', getQuizByDifficulty);
 quizRouter.get('/:title', getQuestionByTitle);
 quizRouter.post('/post', create);
 quizRouter.post('/delete', deleteQuiz);

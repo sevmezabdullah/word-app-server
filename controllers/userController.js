@@ -136,7 +136,36 @@ async function verifyAccount(request, response) {
       'Kullanıcı doğrulaması başarısız. Kullanıcıyı daha önce doğrulamış yada kayıt oluşturmamış olabilirsiniz. Lütfen giriş yapmayı deneyin.',
   });
 }
-async function signInWithGoogle(request, response) {}
+async function signInWithGoogle(request, response) {
+  const { email, locale, name, given_name, family_name } = request.body;
+  const responses = getResponses(locale);
+  try {
+    const user = await User.findOne({ email: email });
+    if (user === null || user === undefined) {
+      const registerCode = randomize('Aa0', 10);
+      const hashedPassword = await hashPassword(user.id);
+
+      const user = await createUser({
+        name: given_name,
+        surname: family_name,
+        email: email,
+        password: hashedPassword,
+        registerCode: registerCode,
+        authSource: 'google',
+        role: 2011,
+      });
+    }
+    return response.status(200).json({ message: 'Signed in', user });
+  } catch (error) {}
+}
+
+async function createUser(user) {
+  if (user) {
+    const newUser = new User(user);
+    const createdUser = await newUser.save();
+    return createdUser;
+  }
+}
 async function getUsers(request, response) {
   try {
     const allUser = await User.find().select('-password -__v');

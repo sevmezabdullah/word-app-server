@@ -137,26 +137,48 @@ async function verifyAccount(request, response) {
   });
 }
 async function signInWithGoogle(request, response) {
-  const { email, locale, name, given_name, family_name } = request.body;
-  const responses = getResponses(locale);
+  const { id, email, locale, given_name, family_name } = request.body;
+
   try {
     const user = await User.findOne({ email: email });
     if (user === null || user === undefined) {
       const registerCode = randomize('Aa0', 10);
-      const hashedPassword = await hashPassword(user.id);
-
+      const hashedPassword = await hashPassword(id);
       const user = await createUser({
         name: given_name,
         surname: family_name,
+        isVerify: true,
         email: email,
         password: hashedPassword,
         registerCode: registerCode,
         authSource: 'google',
         role: 2011,
+        currentLang: null,
+        nativeLang: null,
       });
+
+      googleCallback(user, response, locale);
     }
-    return response.status(200).json({ message: 'Signed in', user });
+    googleCallback(user, response, locale);
   } catch (error) {}
+}
+
+async function googleCallback(user, response, locale) {
+  const responses = getResponses(locale);
+
+  const token = await generateJWT({ user });
+  return response.status(200).json({
+    isLogged: true,
+    user,
+    token,
+    currentLang: user.currentLang,
+    nativeLang: user.nativeLang,
+    categoryAwardsIds: user.categoryAwardsIds,
+    id: user.id,
+    level: user.level,
+    isVerify: user.isVerify,
+    message: responses.signed_success,
+  });
 }
 
 async function createUser(user) {

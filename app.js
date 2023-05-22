@@ -36,7 +36,7 @@ app.use(
 );
 
 app.use(morgan('dev'));
-app.use(cors({ origin: 'http://localhost:3001', credentials: false }));
+app.use(cors({ origin: 'http://213.142.159.71', credentials: false }));
 
 app.use('/status',(req,res)=>{
   return res.json({status:"ok"})

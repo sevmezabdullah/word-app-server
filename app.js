@@ -38,6 +38,9 @@ app.use(
 app.use(morgan('dev'));
 app.use(cors({ origin: 'http://localhost:3001', credentials: false }));
 
+app.use('/status',(req,res)=>{
+  return res.json({status:"ok"})
+})
 app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use('/users', userRouter);
 app.use('/category', categoryRouter);
